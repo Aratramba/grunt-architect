@@ -5,7 +5,7 @@ CSON = require('cson')
 
 class Architect
 
-  init: (@jsonFile, @htmlFile, @grunt) ->
+  init: (@jsonFile, @htmlFile, @grunt, @$) ->
 
     # check if blueprints exist
     if not fs.existsSync(@jsonFile)
@@ -28,9 +28,10 @@ class Architect
   # generate blueprint
   generate: (json, meta) =>
 
-    if not json
+    if not json or typeof json isnt 'object' or json.location?.first_line # ugly ugly check for failed cson parse (pending https://github.com/bevry/cson/issues/26)
       @grunt.log.error "Error parsing json (#{meta})"
       return
+
 
     # no path specified
     if not json.path
@@ -90,11 +91,11 @@ class Architect
 
   # ---
   # gather comments from input html
-  process: ($, cb) ->
+  process: (cb) ->
 
     # ---
     # filter comments from html
-    comments = $("*").contents().filter (n, el) =>
+    comments = @$("*").contents().filter (n, el) =>
       if el.type is 'comment' # check for comment
         if el.data.replace(/\s+/g, '').substring(0, 9) is 'architect' # check for 'architect'
           return true

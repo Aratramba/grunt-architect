@@ -30,17 +30,17 @@ module.exports = (grunt) ->
 
           grunt.log.oklns(filepath)
 
-          architect = new Architect()
-          architect.init(f.dest, filepath, grunt)
-
           # read file
           srcContents = grunt.file.read(filepath)
 
           # load file into cheerio
           $ = cheerio.load(srcContents)
 
+          architect = new Architect()
+          architect.init(f.dest, filepath, grunt, $)
+
           # generate blueprints
-          architect.process $, =>
+          architect.process =>
             --counter
             if counter is 0
               done()
