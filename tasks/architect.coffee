@@ -49,7 +49,8 @@ class Architect
       if not inject.get(cursor)
         inject.set(cursor, {})
 
-    inject.set(path, json)
+    key = Object.keys(json)
+    inject.set("#{path}.#{key}", json[key])
 
     # inject new json
     #inject.set(path, json)

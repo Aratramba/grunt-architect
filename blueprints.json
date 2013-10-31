@@ -17,6 +17,21 @@
                         },
                         "image": {}
                     }
+                },
+                "identifier1": {
+                    "description": "contentblob 1",
+                    "sortorder": 1,
+                    "fields": {
+                        "title": {
+                            "label": "title",
+                            "help_text": "description for title"
+                        },
+                        "body": {
+                            "label": "body",
+                            "help_text": "max 350 chars"
+                        },
+                        "image": {}
+                    }
                 }
             }
         },

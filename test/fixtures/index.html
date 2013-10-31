@@ -23,6 +23,10 @@
                     image: {}
         }
         -->
+        {% get_contentblob_for_node 'identifier1' as contentblob %}
+        <h1>{{ contentblob.title }}</h1>
+        <p>{{ contentblob.body }}</p>
+        <img src="{{ contentblob.image }}">
 
         <!-- random comment -->
 
