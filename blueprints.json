@@ -16,7 +16,8 @@
                             "help_text": "2max 350 chars"
                         },
                         "image": {}
-                    }
+                    },
+                    "meta": "this is a contentblob for multiple pages"
                 },
                 "identifier1": {
                     "description": "contentblob 1",
@@ -31,7 +32,8 @@
                             "help_text": "max 350 chars"
                         },
                         "image": {}
-                    }
+                    },
+                    "meta": "this is a contentblob for multiple pages"
                 }
             }
         },
@@ -41,7 +43,8 @@
                     "foo": {
                         "obj": {
                             "description": "foooooo",
-                            "test": "test"
+                            "test": "test",
+                            "meta": "this is a test"
                         }
                     }
                 }
@@ -51,9 +54,17 @@
             "slideshows": {
                 "header": {
                     "description": "header slideshow",
-                    "max_slides": 5
+                    "max_slides": 5,
+                    "meta": "this is a slideshow for the about page"
                 }
             }
+        }
+    },
+    "fooooo": {
+        "obj": {
+            "description": "foooooo",
+            "test": "test",
+            "meta": "this is also a failed test"
         }
     }
 }

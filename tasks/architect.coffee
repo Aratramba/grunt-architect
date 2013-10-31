@@ -5,61 +5,86 @@ CSON = require('cson')
 
 class Architect
 
-  init: (@file) ->
+  init: (@jsonFile, @htmlFile, @grunt) ->
 
-    if not fs.existsSync(@file)
+    # check if blueprints exist
+    if not fs.existsSync(@jsonFile)
+
+      # create from template
       template = require('./templates/blueprints')
-      fs.writeFileSync @file, JSON.stringify(template)
+      fs.writeFileSync @jsonFile, JSON.stringify(template)
 
-    @blueprints = JSON.parse(fs.readFileSync(@file, 'utf8'))
+    # read blueprints
+    @blueprints = JSON.parse(fs.readFileSync(@jsonFile, 'utf8'))
 
+
+  # ---
+  # strip meta comment
+  cleanMeta: (meta) ->
+    return meta.replace(/^(\s+)?architect(\s+)/, '').trim()
 
 
   # ---
   # generate blueprint
   generate: (json, meta) =>
 
-    if typeof json isnt 'object'
-      console.log "Failed parsing cson (#{meta})"
+    if not json
+      @grunt.log.error "Error parsing json (#{meta})"
+      return
 
     # no path specified
     if not json.path
-      console.log 'No json path specified. Exiting.'
+      @grunt.log.error "No json path specified (#{meta})"
       return
 
 
-    # create json resource
-    inject = new JSONR(@blueprints, { from_file: false, key_sep: '.' })
-
-
+    # cleanup json
     # get path and remove it from json
     path = json.path
     pathArr = path.split('.')
     delete json.path
 
 
-    # traverse / manipulate blueprints
-    # path doesnt exist
 
+    # get json key
+    key = Object.keys(json)
+
+    # log
+    @grunt.verbose.oklns "#{key}: \"#{meta}\""
+
+
+
+    # traverse / manipulate blueprints
     # create empty object for every non existing step
 
+    # create json toolkit resource
+    inject = new JSONR(@blueprints, { from_file: false, key_sep: '.' })
+
+
+    # create empty object for steps in path that don't exist
     cursor = pathArr.shift()
     for step in pathArr
       cursor += ".#{step}"
       if not inject.get(cursor)
         inject.set(cursor, {})
 
-    key = Object.keys(json)
+
+    # add meta (strip architect)
+    json[key].meta = meta
+
+    # inject new json
     inject.set("#{path}.#{key}", json[key])
 
     # inject new json
-    #inject.set(path, json)
     @blueprints = inject.data
 
-    str = JSON.stringify(@blueprints, null, 4) 
 
-    # write to file only once is preferred
-    fs.writeFileSync @file, str
+
+    # write to file
+    str = JSON.stringify(@blueprints, null, 4)
+
+    # write to file only once is probably preferred
+    fs.writeFileSync @jsonFile, str
 
 
 
@@ -86,9 +111,10 @@ class Architect
         meta = a.replace(/\s+/g, ' ')
         return ''
 
+      meta = @cleanMeta(meta)
+
       blueprint = CSON.parseSync(blueprint)
-      if blueprint
-        @generate(blueprint, meta)
+      @generate(blueprint, meta)
 
 
     # callback

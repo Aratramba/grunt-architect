@@ -28,16 +28,16 @@ module.exports = (grunt) ->
 
         .forEach (filepath) ->
 
+          grunt.log.oklns(filepath)
+
           architect = new Architect()
-          architect.init(f.dest)
+          architect.init(f.dest, filepath, grunt)
 
           # read file
           srcContents = grunt.file.read(filepath)
 
           # load file into cheerio
           $ = cheerio.load(srcContents)
-
-          console.log "#{filepath} done"
 
           # generate blueprints
           architect.process $, =>
