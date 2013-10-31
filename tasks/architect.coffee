@@ -1,6 +1,7 @@
 fs = require('fs')
 JSONR = require('json-toolkit').Resource
 CSON = require('cson')
+YAML = require('js-yaml')
 
 
 class Architect
@@ -18,10 +19,12 @@ class Architect
     @blueprints = JSON.parse(fs.readFileSync(@jsonFile, 'utf8'))
 
 
+
   # ---
   # strip meta comment
   cleanMeta: (meta) ->
     return meta.replace(/^(\s+)?architect(\s+)/, '').trim()
+
 
 
   # ---
@@ -114,6 +117,8 @@ class Architect
 
       meta = @cleanMeta(meta)
 
+      console.log YAML.load(blueprint)
+      
       blueprint = CSON.parseSync(blueprint)
       @generate(blueprint, meta)
 

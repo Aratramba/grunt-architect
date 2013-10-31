@@ -14,7 +14,7 @@ module.exports = (grunt) ->
     architect:
       architect:
         files: {
-          'blueprints.json': ['test/fixtures/**/*.html']
+          'blueprints.json': ['test/fixtures/**/*-yaml.html']
         }
 
     nodeunit:
