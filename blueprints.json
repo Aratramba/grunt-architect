@@ -1,4 +1,44 @@
 {
     "global": {},
-    "nodes": {}
+    "nodes": {
+        "homepage": {
+            "contentblobs": {
+                "identifier2": {
+                    "description": "contentblob 2",
+                    "sortorder": 0,
+                    "fields": {
+                        "title": {
+                            "label": "title2",
+                            "help_text": "description2 for title"
+                        },
+                        "body": {
+                            "label": "body2",
+                            "help_text": "2max 350 chars"
+                        },
+                        "image": {}
+                    }
+                }
+            }
+        },
+        "foo": {
+            "foo": {
+                "foo": {
+                    "foo": {
+                        "obj": {
+                            "description": "foooooo",
+                            "test": "test"
+                        }
+                    }
+                }
+            }
+        },
+        "about": {
+            "slideshows": {
+                "header": {
+                    "description": "header slideshow",
+                    "max_slides": 5
+                }
+            }
+        }
+    }
 }

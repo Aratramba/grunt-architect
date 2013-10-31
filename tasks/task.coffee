@@ -12,16 +12,19 @@ module.exports = (grunt) ->
 
   grunt.registerMultiTask 'architect', 'Grunt plugin for creating blueprints', ->
 
+    done = @async()
+    counter = 0
+
     # Iterate over all specified file groups.
     @files.forEach (f) ->
 
+      counter = f.src.length
+
       # Concat specified files.
       src = f.src
-        .filter (filepath)->
-            # Warn on and remove invalid source files (if nonull was set).
-            if not grunt.file.exists(filepath) or not grunt.file.isFile(filepath)
-              return false
-            true
+        .filter (filepath) ->
+          # Warn on and remove invalid source files (if nonull was set).
+          return grunt.file.exists(filepath) or grunt.file.isFile(filepath)
 
         .forEach (filepath) ->
 
@@ -34,5 +37,10 @@ module.exports = (grunt) ->
           # load file into cheerio
           $ = cheerio.load(srcContents)
 
+          console.log "#{filepath} done"
+
           # generate blueprints
-          architect.process($)
+          architect.process $, =>
+            --counter
+            if counter is 0
+              done()
