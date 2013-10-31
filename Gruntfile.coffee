@@ -2,8 +2,8 @@
 module.exports = (grunt) ->
 
   grunt.loadNpmTasks('grunt-contrib-nodeunit')
-  grunt.loadTasks('tasks')
-
+  grunt.loadTasks('tasks/')
+  
   # By default, lint and run all tests.
   grunt.registerTask('default', ['architect'])
   grunt.registerTask('test', ['nodeunit'])
