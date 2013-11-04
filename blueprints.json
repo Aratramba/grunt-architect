@@ -1,1 +1,15 @@
-{"global":{},"nodes":{}}
+{
+    "global": {},
+    "nodes": {
+        "about": {
+            "slideshows": {
+                "header": {
+                    "title": "slideshow 1",
+                    "description": "header slideshow",
+                    "max_slides": 5,
+                    "meta": "this is a slideshow for the about page"
+                }
+            }
+        }
+    }
+}

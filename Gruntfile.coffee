@@ -13,8 +13,11 @@ module.exports = (grunt) ->
 
     architect:
       architect:
+        options: {
+          parser: 'json'
+        }
         files: {
-          'blueprints.json': ['test/fixtures/**/*-yaml.html']
+          'blueprints.json': ['test/fixtures/**/*-json.html']
         }
 
     nodeunit:
