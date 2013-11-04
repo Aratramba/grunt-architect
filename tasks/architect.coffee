@@ -6,17 +6,9 @@ YAML = require('js-yaml')
 
 class Architect
 
-  init: (@jsonFile, @htmlFile, @grunt, @$) ->
-
-    # check if blueprints exist
-    if not fs.existsSync(@jsonFile)
-
-      # create from template
-      template = require('./templates/blueprints')
-      fs.writeFileSync @jsonFile, JSON.stringify(template)
-
-    # read blueprints
-    @blueprints = JSON.parse(fs.readFileSync(@jsonFile, 'utf8'))
+  init: (@options) ->
+    @grunt = @options.grunt
+    @blueprints = @grunt.file.readJSON(@options.jsonFile)
 
 
 
@@ -88,17 +80,17 @@ class Architect
     str = JSON.stringify(@blueprints, null, 4)
 
     # write to file only once is probably preferred
-    fs.writeFileSync @jsonFile, str
+    fs.writeFileSync @options.jsonFile, str
 
 
 
   # ---
   # gather comments from input html
-  process: (parser, cb) ->
+  process: (parser, $, cb) ->
 
     # ---
     # filter comments from html
-    comments = @$("*").contents().filter (n, el) =>
+    comments = $("*").contents().filter (n, el) =>
       if el.type is 'comment' # check for comment
         if el.data.replace(/\s+/g, '').substring(0, 9) is 'architect' # check for 'architect'
           return true
@@ -162,6 +154,7 @@ class Architect
   # ---
   # json
   processJSON: (el) ->
+
     meta = ''
     blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
       meta = a.replace(/\s+/g, ' ')

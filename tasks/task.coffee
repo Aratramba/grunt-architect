@@ -13,7 +13,11 @@ module.exports = (grunt) ->
   grunt.registerMultiTask 'architect', 'Grunt plugin for creating blueprints', ->
 
     options = @options {
-      parser: 'yaml'
+      parser: 'yaml',
+      template: {
+        global: {}
+        nodes: {}
+      }
     }
 
     done = @async()
@@ -31,11 +35,17 @@ module.exports = (grunt) ->
 
       # Concat specified files.
       src = f.src
-        .filter (filepath) ->
-          # Warn on and remove invalid source files (if nonull was set).
+        .filter (filepath) -> 
           return grunt.file.exists(filepath) or grunt.file.isFile(filepath)
 
         .forEach (filepath) ->
+
+          # check if blueprints exist
+          if not grunt.file.exists(f.dest)
+
+            # create from template
+            grunt.file.write(f.dest, JSON.stringify(options.template))
+
 
           grunt.log.oklns(filepath)
 
@@ -46,10 +56,18 @@ module.exports = (grunt) ->
           $ = cheerio.load(srcContents)
 
           architect = new Architect()
-          architect.init(f.dest, filepath, grunt, $)
+
+          args = {
+            jsonFile: f.dest
+            htmlFile: filepath
+            template: options.template
+            grunt
+          }
+
+          architect.init(args)
 
           # generate blueprints
-          architect.process options.parser, =>
+          architect.process options.parser, $, =>
             --counter
             if counter is 0
               done()
