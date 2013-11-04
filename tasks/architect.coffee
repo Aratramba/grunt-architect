@@ -1,6 +1,7 @@
 fs = require('fs')
 JSONR = require('json-toolkit').Resource
 CSON = require('cson')
+YAML = require('js-yaml')
 
 
 class Architect
@@ -18,10 +19,12 @@ class Architect
     @blueprints = JSON.parse(fs.readFileSync(@jsonFile, 'utf8'))
 
 
+
   # ---
   # strip meta comment
   cleanMeta: (meta) ->
     return meta.replace(/^(\s+)?architect(\s+)/, '').trim()
+
 
 
   # ---
@@ -91,7 +94,7 @@ class Architect
 
   # ---
   # gather comments from input html
-  process: (cb) ->
+  process: (parser, cb) ->
 
     # ---
     # filter comments from html
@@ -102,24 +105,73 @@ class Architect
         return false
       return false
 
+
     # ---
     # loop comments
     comments.each (n, el) =>
-      meta = ''
 
-      # remove meta information from blueprint
-      blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
-        meta = a.replace(/\s+/g, ' ')
-        return ''
+      # parse
+      switch parser
+        when 'yaml'
+          { meta, blueprint } = @processYAML(el)
+        when 'cson'
+          { meta, blueprint } = @processCSON(el)
+        when 'json'
+          { meta, blueprint } = @processJSON(el)
+        
 
+      # cleanup meta
       meta = @cleanMeta(meta)
 
-      blueprint = CSON.parseSync(blueprint)
+      # generate blueprint
       @generate(blueprint, meta)
 
 
     # callback
     cb()
+
+
+
+  # ---
+  # yaml
+  processYAML: (el) ->
+    meta = ''
+    blueprint = el.data.replace /^[^---]*/g, (a,b,c) ->
+      meta = a.replace(/\s+/g, ' ')
+      return ''
+
+    blueprint = YAML.safeLoad(blueprint)
+
+    return { meta, blueprint }
+
+
+  # ---
+  # cson
+  processCSON: (el) ->
+    meta = ''
+    blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
+      meta = a.replace(/\s+/g, ' ')
+      return ''
+
+    blueprint = CSON.parseSync(blueprint)
+
+    return { meta, blueprint }
+
+
+
+  # ---
+  # json
+  processJSON: (el) ->
+    meta = ''
+    blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
+      meta = a.replace(/\s+/g, ' ')
+      return ''
+
+    blueprint = JSON.parse(blueprint)
+
+    return { meta, blueprint }
+
+    
         
 
 

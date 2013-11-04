@@ -27,7 +27,8 @@
     "grunt": "~0.4.1",
     "cson": "~1.4.4",
     "json-toolkit": "~1.1.0",
-    "cheerio": "~0.12.3"
+    "cheerio": "~0.12.3",
+    "js-yaml": "~2.1.3"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"

@@ -12,8 +12,17 @@ module.exports = (grunt) ->
 
   grunt.registerMultiTask 'architect', 'Grunt plugin for creating blueprints', ->
 
+    options = @options {
+      parser: 'yaml'
+    }
+
     done = @async()
     counter = 0
+
+    # parser
+    if ['yaml', 'json', 'cson'].indexOf(options.parser) is -1
+      grunt.fail.warn 'Parser option must be one of yaml|json|cson'
+
 
     # Iterate over all specified file groups.
     @files.forEach (f) ->
@@ -40,7 +49,7 @@ module.exports = (grunt) ->
           architect.init(f.dest, filepath, grunt, $)
 
           # generate blueprints
-          architect.process =>
+          architect.process options.parser, =>
             --counter
             if counter is 0
               done()

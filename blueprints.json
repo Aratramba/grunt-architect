@@ -1,58 +1,10 @@
 {
     "global": {},
     "nodes": {
-        "homepage": {
-            "contentblobs": {
-                "identifier1": {
-                    "description": "contentblob 1",
-                    "sortorder": 1,
-                    "fields": {
-                        "title": {
-                            "label": "title",
-                            "help_text": "description for title"
-                        },
-                        "body": {
-                            "label": "body",
-                            "help_text": "max 350 chars"
-                        },
-                        "image": {}
-                    },
-                    "meta": "this is a contentblob for multiple pages"
-                },
-                "identifier2": {
-                    "description": "contentblob 2",
-                    "sortorder": 0,
-                    "fields": {
-                        "title": {
-                            "label": "title2",
-                            "help_text": "description2 for title"
-                        },
-                        "body": {
-                            "label": "body2",
-                            "help_text": "2max 350 chars"
-                        },
-                        "image": {}
-                    },
-                    "meta": "this is a contentblob for multiple pages"
-                }
-            }
-        },
-        "foo": {
-            "foo": {
-                "foo": {
-                    "foo": {
-                        "obj": {
-                            "description": "foooooo",
-                            "test": "test",
-                            "meta": "this is a test"
-                        }
-                    }
-                }
-            }
-        },
         "about": {
             "slideshows": {
                 "header": {
+                    "title": "slideshow 1",
                     "description": "header slideshow",
                     "max_slides": 5,
                     "meta": "this is a slideshow for the about page"
