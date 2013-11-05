@@ -13,13 +13,6 @@ class Architect
 
 
   # ---
-  # strip meta comment
-  cleanMeta: (meta) ->
-    return meta.replace(/^(\s+)?architect(\s+)/, '').trim()
-
-
-
-  # ---
   # generate blueprint
   generate: (json, meta) =>
 
@@ -41,13 +34,11 @@ class Architect
     delete json.path
 
 
-
     # get json key
     key = Object.keys(json)
 
     # log
     @grunt.verbose.oklns "#{key}: \"#{meta}\""
-
 
 
     # traverse / manipulate blueprints
@@ -75,7 +66,6 @@ class Architect
     @blueprints = inject.data
 
 
-
     # write to file
     str = JSON.stringify(@blueprints, null, 4)
 
@@ -85,35 +75,34 @@ class Architect
 
 
   # ---
-  # gather comments from input html
-  process: (parser, $, cb) ->
+  # gather fragments from input html
+  process: (args, $, cb) ->
 
     # ---
-    # filter comments from html
-    comments = $("*").contents().filter (n, el) =>
+    # filter fragments from html
+    fragments = $("*").contents().filter (n, el) =>
       if el.type is 'comment' # check for comment
-        if el.data.replace(/\s+/g, '').substring(0, 9) is 'architect' # check for 'architect'
+        if el.data.replace(/\s+/g, '').substring(0, args.keyword.length) is args.keyword # check for provided keyword
           return true
         return false
       return false
 
-
     # ---
-    # loop comments
-    comments.each (n, el) =>
+    # loop fragments
+    fragments.each (n, el) =>
 
       # parse
-      switch parser
+      switch args.parser
         when 'yaml'
           { meta, blueprint } = @processYAML(el)
         when 'cson'
           { meta, blueprint } = @processCSON(el)
         when 'json'
           { meta, blueprint } = @processJSON(el)
-        
+
 
       # cleanup meta
-      meta = @cleanMeta(meta)
+      meta = @cleanMeta(meta, args.keyword)
 
       # generate blueprint
       @generate(blueprint, meta)
@@ -133,8 +122,8 @@ class Architect
       return ''
 
     blueprint = YAML.safeLoad(blueprint)
-
     return { meta, blueprint }
+
 
 
   # ---
@@ -146,7 +135,6 @@ class Architect
       return ''
 
     blueprint = CSON.parseSync(blueprint)
-
     return { meta, blueprint }
 
 
@@ -161,12 +149,15 @@ class Architect
       return ''
 
     blueprint = JSON.parse(blueprint)
-
     return { meta, blueprint }
 
+
+
+  # ---
+  # strip meta fragment
+  cleanMeta: (meta, keyword) ->
+    return meta.replace(new RegExp("^(\\s+)?#{keyword}(\\s+)"), '').trim()
     
-        
-
-
+  
 
 module.exports = Architect

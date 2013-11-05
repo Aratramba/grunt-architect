@@ -19,7 +19,7 @@ module.exports = (grunt) ->
           parser: 'json'
         }
         files: {
-          'test/tmp/input-json.json': ['test/fixtures/**/*-json.html']
+          'test/tmp/input-json.json': ['test/fixtures/**/json*.html']
         }
 
       cson:
@@ -27,7 +27,7 @@ module.exports = (grunt) ->
           parser: 'cson'
         }
         files: {
-          'test/tmp/input-cson.json': ['test/fixtures/**/*-cson.html']
+          'test/tmp/input-cson.json': ['test/fixtures/**/cson*.html']
         }
 
       yaml:
@@ -35,8 +35,36 @@ module.exports = (grunt) ->
           parser: 'yaml'
         }
         files: {
-          'test/tmp/input-yaml.json': ['test/fixtures/**/*-yaml.html']
+          'test/tmp/input-yaml.json': ['test/fixtures/**/yaml*.html']
         }
+
+
+      # todo: template
+      template:
+        options: {
+          template: {
+            foo: {
+              bar: {}
+            }
+          }
+        }
+        files: {
+          'test/tmp/template.json': ['test/fixtures/**/template.html']
+        }
+
+
+      # todo: keyword
+      keyword:
+        options: {
+          parser: 'cson'
+          keyword: 'customkeyword'
+        }
+        files: {
+          'test/tmp/keyword.json': ['test/fixtures/**/keyword.html']
+        }
+
+
+      
 
 
     clean:

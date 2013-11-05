@@ -13,11 +13,9 @@ module.exports = (grunt) ->
   grunt.registerMultiTask 'architect', 'Grunt plugin for creating blueprints', ->
 
     options = @options {
-      parser: 'yaml',
-      template: {
-        global: {}
-        nodes: {}
-      }
+      parser: 'yaml'
+      template: {}
+      keyword: 'architect'
     }
 
     done = @async()
@@ -57,17 +55,26 @@ module.exports = (grunt) ->
 
           architect = new Architect()
 
-          args = {
+
+          # init
+          initargs = {
             jsonFile: f.dest
             htmlFile: filepath
             template: options.template
             grunt
           }
 
-          architect.init(args)
+          architect.init(initargs)
+
+
+          # process
+          processargs = {
+            keyword: options.keyword
+            parser: options.parser
+          }
 
           # generate blueprints
-          architect.process options.parser, $, =>
+          architect.process processargs, $, =>
             --counter
             if counter is 0
               done()
