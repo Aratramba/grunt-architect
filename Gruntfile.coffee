@@ -7,7 +7,7 @@ module.exports = (grunt) ->
   grunt.loadTasks('tasks/')
   
   # By default, lint and run all tests.
-  grunt.registerTask('default', ['clean','architect'])
+  grunt.registerTask('default', ['clean','architect', 'nodeunit'])
   grunt.registerTask('test', ['clean','architect','nodeunit'])
 
 
@@ -19,7 +19,7 @@ module.exports = (grunt) ->
           parser: 'json'
         }
         files: {
-          'test/tmp/input-json.json': ['test/fixtures/**/json*.html']
+          'test/tmp/json.json': ['test/fixtures/json*.html']
         }
 
       cson:
@@ -27,7 +27,7 @@ module.exports = (grunt) ->
           parser: 'cson'
         }
         files: {
-          'test/tmp/input-cson.json': ['test/fixtures/**/cson*.html']
+          'test/tmp/cson.json': ['test/fixtures/cson*.html']
         }
 
       yaml:
@@ -35,32 +35,30 @@ module.exports = (grunt) ->
           parser: 'yaml'
         }
         files: {
-          'test/tmp/input-yaml.json': ['test/fixtures/**/yaml*.html']
+          'test/tmp/yaml.json': ['test/fixtures/yaml*.html']
         }
 
 
-      # todo: template
-      template:
+      customtemplate:
         options: {
           template: {
             foo: {
-              bar: {}
+              baz: "baz"
             }
           }
         }
         files: {
-          'test/tmp/template.json': ['test/fixtures/**/template.html']
+          'test/tmp/custom-template.json': ['test/fixtures/custom-template.html']
         }
 
 
       # todo: keyword
-      keyword:
+      customkeyword:
         options: {
-          parser: 'cson'
           keyword: 'customkeyword'
         }
         files: {
-          'test/tmp/keyword.json': ['test/fixtures/**/keyword.html']
+          'test/tmp/custom-keyword.json': ['test/fixtures/custom-keyword.html']
         }
 
 
@@ -72,6 +70,6 @@ module.exports = (grunt) ->
 
 
     nodeunit:
-      json: ['test/*_test.js'],
+      all: ['test/architect_test.js'],
 
   

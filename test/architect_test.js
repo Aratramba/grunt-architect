@@ -2,47 +2,59 @@
 
 var grunt = require('grunt');
 
-/*
-  ======== A Handy Little Nodeunit Reference ========
-  https://github.com/caolan/nodeunit
-
-  Test methods:
-    test.expect(numAssertions)
-    test.done()
-  Test assertions:
-    test.ok(value, [message])
-    test.equal(actual, expected, [message])
-    test.notEqual(actual, expected, [message])
-    test.deepEqual(actual, expected, [message])
-    test.notDeepEqual(actual, expected, [message])
-    test.strictEqual(actual, expected, [message])
-    test.notStrictEqual(actual, expected, [message])
-    test.throws(block, [error], [message])
-    test.doesNotThrow(block, [error], [message])
-    test.ifError(value)
-*/
 
 exports.architect = {
   setUp: function(done) {
-    // setup here if necessary
     done();
   },
-  default_options: function(test) {
+
+  json: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actual = grunt.file.read('test/tmp/json.json');
+    var expected = grunt.file.read('test/expected/family.json');
+    test.equal(actual, expected, 'should parse json.');
 
     test.done();
   },
-  custom_options: function(test) {
+
+  cson: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actual = grunt.file.read('test/tmp/cson.json');
+    var expected = grunt.file.read('test/expected/family.json');
+    test.equal(actual, expected, 'should parse cson.');
 
     test.done();
   },
+
+  yaml: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('test/tmp/yaml.json');
+    var expected = grunt.file.read('test/expected/family.json');
+    test.equal(actual, expected, 'should parse yaml.');
+
+    test.done();
+  },
+
+  customtemplate: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('test/tmp/custom-template.json');
+    var expected = grunt.file.read('test/expected/simple.json');
+    test.equal(actual, expected, 'should be able to use a custom template.');
+
+    test.done();
+  },
+
+  customkeyword: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('test/tmp/custom-keyword.json');
+    var expected = grunt.file.read('test/expected/simple.json');
+    test.equal(actual, expected, 'should be able to use a custom keyword.');
+
+    test.done();
+  }
 };

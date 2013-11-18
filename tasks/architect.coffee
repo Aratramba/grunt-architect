@@ -37,6 +37,11 @@ class Architect
     # get json key
     key = Object.keys(json)
 
+    # multiple keys
+    #if Array.isArray(key)
+
+
+
     # log
     @grunt.verbose.oklns "#{key}: \"#{meta}\""
 
@@ -101,6 +106,9 @@ class Architect
           { meta, blueprint } = @processJSON(el)
 
 
+      # something went wrong
+      return if not meta or not blueprint
+
       # cleanup meta
       meta = @cleanMeta(meta, args.keyword)
 
@@ -116,13 +124,16 @@ class Architect
   # ---
   # yaml
   processYAML: (el) ->
-    meta = ''
-    blueprint = el.data.replace /^[^---]*/g, (a,b,c) ->
-      meta = a.replace(/\s+/g, ' ')
-      return ''
+    data = el.data.split('---')
+    meta = data[0].replace(/\s+/g, ' ')
+    blueprint = data[1]
 
-    blueprint = YAML.safeLoad(blueprint)
-    return { meta, blueprint }
+    try 
+      blueprint = YAML.safeLoad(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
 
 
 
@@ -134,8 +145,12 @@ class Architect
       meta = a.replace(/\s+/g, ' ')
       return ''
 
-    blueprint = CSON.parseSync(blueprint)
-    return { meta, blueprint }
+    try 
+      blueprint = CSON.parseSync(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
 
 
 
@@ -148,8 +163,14 @@ class Architect
       meta = a.replace(/\s+/g, ' ')
       return ''
 
-    blueprint = JSON.parse(blueprint)
-    return { meta, blueprint }
+    try 
+      blueprint = JSON.parse(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
+
+    
 
 
 

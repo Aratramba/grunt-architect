@@ -1,83 +1,36 @@
 <html>
 <head>
-    <title>Test</title>
+    <title>CSON test</title>
 </head>
 <body>
-
-
     <div>
-        <!-- architect
-        this is a contentblob for multiple pages
-        {
-            path: 'nodes.homepage.contentblobs'
-            identifier1:
-                description: 'contentblob 1'
-                sortorder: 1
-                fields:
-                    title:
-                        label: 'title'
-                        help_text: 'description for title'
-                    body:
-                        label: 'body'
-                        help_text: 'max 350 chars'
-                    image: {}
-        }
-        -->
-        {% get_contentblob_for_node 'identifier1' as contentblob %}
-        <h1>{{ contentblob.title }}</h1>
-        <p>{{ contentblob.body }}</p>
-        <img src="{{ contentblob.image }}">
-
-        <!-- random comment -->
-
-        <!-- architect: random comment -->
 
         <!-- architect
-        this is a contentblob for multiple pages
+        child
         {
-            path: 'nodes.homepage.contentblobs'
-            identifier2:
-                description: 'contentblob 2'
-                sortorder: 0
-                fields:
-                    title:
-                        label: 'title2'
-                        help_text: 'description2 for title'
-                    body:
-                        label: 'body2'
-                        help_text: '2max 350 chars'
-                    image: {}
-        }
-        -->
-
-        <!-- architect
-        this is a test
-        {
-            path: 'nodes.foo.foo.foo.foo'
-            obj:
-                description: 'foooooo'
-                test: 'test'
+            path: 'family'
+            child:
+                description: 'im a child'
         }
         -->
 
 
         <!-- architect
-        this is a failed test
+        grandchild
         {
-            obj:
-                description: 'foooooo'
-                test: 'test'
+            path: 'family.child'
+            grandchild:
+                description: 'im a grandchild'
         }
         -->
 
 
         <!-- architect
-        this is also a failed test
+        fail: syntax error
         {
-            path: 'fooooo'
-            obj
-                description: 'foooooo'
-                test: 'test'
+            path: 'family'
+            nobody
+                description: 'my name is nobody'
         }
         -->
 
