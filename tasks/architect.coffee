@@ -35,20 +35,10 @@ class Architect
 
 
     # get json key
-    key = Object.keys(json)
-
-    # multiple keys
-    #if Array.isArray(key)
-
-
-
-    # log
-    @grunt.verbose.oklns "#{key}: \"#{meta}\""
-
+    keys = Object.keys(json)
 
     # traverse / manipulate blueprints
     # create empty object for every non existing step
-
     # create json toolkit resource
     inject = new JSONR(@blueprints, { from_file: false, key_sep: '.' })
 
@@ -59,16 +49,22 @@ class Architect
       cursor += ".#{step}"
       if not inject.get(cursor)
         inject.set(cursor, {})
+      
 
+    # manipulate all keys
+    for key in keys
 
-    # add meta (strip architect)
-    json[key].meta = meta
+      # log
+      @grunt.verbose.oklns "#{key}: \"#{meta}\""
 
-    # inject new json
-    inject.set("#{path}.#{key}", json[key])
+      # add meta (strip architect)
+      #json[key].meta = meta
 
-    # inject new json
-    @blueprints = inject.data
+      # inject new json
+      inject.set("#{path}.#{key}", json[key])
+
+      # inject new json
+      @blueprints = inject.data
 
 
     # write to file

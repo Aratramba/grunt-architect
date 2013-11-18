@@ -8,6 +8,9 @@ exports.architect = {
     done();
   },
 
+  // ---
+  // json files
+  // ---
   json: function(test) {
     test.expect(1);
 
@@ -18,6 +21,11 @@ exports.architect = {
     test.done();
   },
 
+
+
+  // ---
+  // cson files
+  // ---
   cson: function(test) {
     test.expect(1);
 
@@ -27,7 +35,12 @@ exports.architect = {
 
     test.done();
   },
+  
 
+  
+  // ---
+  // yaml files
+  // ---
   yaml: function(test) {
     test.expect(1);
 
@@ -37,7 +50,12 @@ exports.architect = {
 
     test.done();
   },
+  
 
+  
+  // ---
+  // custom template specified
+  // ---
   customtemplate: function(test) {
     test.expect(1);
 
@@ -47,7 +65,12 @@ exports.architect = {
 
     test.done();
   },
+  
 
+  
+  // ---
+  // custom keyword specified
+  // ---
   customkeyword: function(test) {
     test.expect(1);
 

@@ -2,19 +2,18 @@
     "family": {
         "child": {
             "description": "im a child",
-            "meta": "child",
             "grandchild": {
                 "description": "im a grandchild",
-                "meta": "grandchild",
                 "greatgrandchild1": {
-                    "description": "im a great-grandchild #1",
-                    "meta": "great-grandchild 1"
+                    "description": "im a great-grandchild #1"
                 },
                 "greatgrandchild2": {
-                    "description": "im a great-grandchild #2",
-                    "meta": "great-grandchild 2"
+                    "description": "im a great-grandchild #2"
                 }
             }
+        },
+        "child-2": {
+            "description": "im a child too"
         }
     }
 }
