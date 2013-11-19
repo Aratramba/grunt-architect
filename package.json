@@ -28,7 +28,8 @@
     "cson": "~1.4.4",
     "json-toolkit": "~1.1.0",
     "cheerio": "~0.12.3",
-    "js-yaml": "~2.1.3"
+    "js-yaml": "~2.1.3",
+    "html-comments": "git://github.com/EightMedia/html-comments.git"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
