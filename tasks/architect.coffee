@@ -13,10 +13,97 @@ class Architect
 
 
   # ---
+  # gather fragments from input html
+  process: (comments, parser, keyword, cb) ->
+
+    # ---
+    # loop fragments
+    for comment in comments
+      { meta, blueprint } = @[parser](comment)
+
+      # something went wrong
+      if not meta or not blueprint
+        cb(false)
+        return
+
+      # cleanup meta
+      meta = @cleanMeta(meta, keyword)
+
+      # generate blueprint
+      @generate(blueprint, meta)
+
+    # callback
+    cb()
+
+
+
+  # ---
+  # yaml
+  yaml: (comment) ->
+    data = comment.split('---')
+    meta = data[0].replace(/\s+/g, ' ')
+    blueprint = data[1]
+
+    try 
+      blueprint = YAML.safeLoad(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
+
+
+
+
+  # ---
+  # cson
+  cson: (comment) ->
+    meta = ''
+    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
+      meta = a.replace(/\s+/g, ' ')
+      return ''
+
+    try 
+      blueprint = CSON.parseSync(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
+
+
+
+
+  # ---
+  # json
+  json: (comment) ->
+    meta = ''
+    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
+      meta = a.replace(/\s+/g, ' ')
+      return ''
+
+    try 
+      blueprint = JSON.parse(blueprint)
+      return { meta, blueprint }
+    catch err
+      @grunt.log.error("#{err} (#{meta})")
+      return false
+
+
+
+
+  # ---
+  # strip meta fragment
+  cleanMeta: (meta, keyword) ->
+    return meta.replace(new RegExp("^(\\s+)?#{keyword}(\\s+)"), '').trim()
+
+
+
+
+  # ---
   # generate blueprint
   generate: (json, meta) =>
 
-    if not json or typeof json isnt 'object' or json.location?.first_line # ugly ugly check for failed cson parse (pending https://github.com/bevry/cson/issues/26)
+    # ugly ugly check for failed cson parse (pending https://github.com/bevry/cson/issues/26)
+    if not json or typeof json isnt 'object' or json.location?.first_line
       @grunt.log.error "Error parsing json (#{meta})"
       return
 
@@ -72,91 +159,8 @@ class Architect
 
     # write to file only once is probably preferred
     fs.writeFileSync @options.jsonFile, str
-
-
-
-  # ---
-  # gather fragments from input html
-  process: (comments, parser, keyword, cb) ->
-
-    # ---
-    # loop fragments
-    for comment in comments
-      { meta, blueprint } = @[parser](comment)
-
-      # something went wrong
-      if not meta or not blueprint
-        cb(false)
-        return
-
-      # cleanup meta
-      meta = @cleanMeta(meta, keyword)
-
-      # generate blueprint
-      @generate(blueprint, meta)
-
-    # callback
-    cb()
-
-
-  # ---
-  # yaml
-  yaml: (comment) ->
-    data = comment.split('---')
-    meta = data[0].replace(/\s+/g, ' ')
-    blueprint = data[1]
-
-    try 
-      blueprint = YAML.safeLoad(blueprint)
-      return { meta, blueprint }
-    catch err
-      @grunt.log.error("#{err} (#{meta})")
-      return false
-
-
-
-  # ---
-  # cson
-  cson: (comment) ->
-    meta = ''
-    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
-      meta = a.replace(/\s+/g, ' ')
-      return ''
-
-    try 
-      blueprint = CSON.parseSync(blueprint)
-      return { meta, blueprint }
-    catch err
-      @grunt.log.error("#{err} (#{meta})")
-      return false
-
-
-
-  # ---
-  # json
-  json: (comment) ->
-
-    meta = ''
-    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
-      meta = a.replace(/\s+/g, ' ')
-      return ''
-
-    try 
-      blueprint = JSON.parse(blueprint)
-      return { meta, blueprint }
-    catch err
-      @grunt.log.error("#{err} (#{meta})")
-      return false
-
-    
-
-
-
-  # ---
-  # strip meta fragment
-  cleanMeta: (meta, keyword) ->
-    return meta.replace(new RegExp("^(\\s+)?#{keyword}(\\s+)"), '').trim()
-    
   
+
+
 
 module.exports = Architect

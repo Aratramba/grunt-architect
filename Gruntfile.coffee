@@ -7,7 +7,7 @@ module.exports = (grunt) ->
   grunt.loadTasks('tasks/')
   
   # By default, lint and run all tests.
-  grunt.registerTask('default', ['clean','architect'])
+  grunt.registerTask('default', ['clean','architect', 'nodeunit'])
   grunt.registerTask('test', ['clean','architect','nodeunit'])
 
 
