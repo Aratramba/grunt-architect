@@ -23,7 +23,9 @@
   "devDependencies": {
     "grunt-contrib-clean": "~0.4.x",
     "grunt-contrib-nodeunit": "~0.2.x",
-    "grunt": "~0.4.x",
+    "grunt": "~0.4.x"
+  },
+  "dependencies": {
     "cson": "~1.4.x",
     "json-toolkit": "~1.1.x",
     "js-yaml": "~2.1.x",
