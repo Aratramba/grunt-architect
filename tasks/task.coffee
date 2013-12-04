@@ -3,9 +3,8 @@
 module.exports = (grunt) ->
 
   # load cheerio
-  cheerio = require('cheerio')
   Architect = require('./architect')
-
+  htmlcomments = require('html-comments')
 
   # ---
   # grunt task
@@ -26,6 +25,10 @@ module.exports = (grunt) ->
       grunt.fail.warn 'Parser option must be one of yaml|json|cson'
 
 
+    # new architect
+    architect = new Architect()
+
+
     # Iterate over all specified file groups.
     @files.forEach (f) ->
 
@@ -44,37 +47,31 @@ module.exports = (grunt) ->
             # create from template
             grunt.file.write(f.dest, JSON.stringify(options.template))
 
-
           grunt.log.oklns(filepath)
 
-          # read file
-          srcContents = grunt.file.read(filepath)
+          # read comments file
+          comments = htmlcomments.loadFile(filepath)
+          comments = htmlcomments.filter(comments, options.keyword)
 
-          # load file into cheerio
-          $ = cheerio.load(srcContents)
+          # if comments were found
+          if comments
 
-          architect = new Architect()
+            # init
+            args = {
+              jsonFile: f.dest
+              htmlFile: filepath
+              template: options.template
+              grunt
+            }
 
-
-          # init
-          initargs = {
-            jsonFile: f.dest
-            htmlFile: filepath
-            template: options.template
-            grunt
-          }
-
-          architect.init(initargs)
+            architect.init(args)
 
 
-          # process
-          processargs = {
-            keyword: options.keyword
-            parser: options.parser
-          }
+            # generate blueprints
+            cb = (yepnope) =>
+              --counter
+              if counter is 0
+                done()
 
-          # generate blueprints
-          architect.process processargs, $, =>
-            --counter
-            if counter is 0
-              done()
+            architect.process(comments, options.parser, options.keyword, cb)
+              

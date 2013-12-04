@@ -77,50 +77,32 @@ class Architect
 
   # ---
   # gather fragments from input html
-  process: (args, $, cb) ->
-
-    # ---
-    # filter fragments from html
-    fragments = $("*").contents().filter (n, el) =>
-      if el.type is 'comment' # check for comment
-        if el.data.replace(/\s+/g, '').substring(0, args.keyword.length) is args.keyword # check for provided keyword
-          return true
-        return false
-      return false
+  process: (comments, parser, keyword, cb) ->
 
     # ---
     # loop fragments
-    fragments.each (n, el) =>
-
-      # parse
-      switch args.parser
-        when 'yaml'
-          { meta, blueprint } = @processYAML(el)
-        when 'cson'
-          { meta, blueprint } = @processCSON(el)
-        when 'json'
-          { meta, blueprint } = @processJSON(el)
-
+    for comment in comments
+      { meta, blueprint } = @[parser](comment)
 
       # something went wrong
-      return if not meta or not blueprint
+      if not meta or not blueprint
+        cb(false)
+        return
 
       # cleanup meta
-      meta = @cleanMeta(meta, args.keyword)
+      meta = @cleanMeta(meta, keyword)
 
       # generate blueprint
       @generate(blueprint, meta)
-
 
     # callback
     cb()
 
 
-
   # ---
   # yaml
-  processYAML: (el) ->
-    data = el.data.split('---')
+  yaml: (comment) ->
+    data = comment.split('---')
     meta = data[0].replace(/\s+/g, ' ')
     blueprint = data[1]
 
@@ -135,9 +117,9 @@ class Architect
 
   # ---
   # cson
-  processCSON: (el) ->
+  cson: (comment) ->
     meta = ''
-    blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
+    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
       meta = a.replace(/\s+/g, ' ')
       return ''
 
@@ -152,10 +134,10 @@ class Architect
 
   # ---
   # json
-  processJSON: (el) ->
+  json: (comment) ->
 
     meta = ''
-    blueprint = el.data.replace /^[^{]*/g, (a,b,c) ->
+    blueprint = comment.replace /^[^{]*/g, (a,b,c) ->
       meta = a.replace(/\s+/g, ' ')
       return ''
 
