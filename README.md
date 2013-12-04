@@ -1,7 +1,5 @@
 # Grunt Architect
-Populate a JSON file right from your HTML comments.
-
-Use json, yaml or cson inside your comments
+Populate a JSON file right from your HTML comments. Use json, yaml or cson to store your data.
 
 ```html
 <div>
@@ -9,7 +7,8 @@ Use json, yaml or cson inside your comments
     some description
     ---
         path: foo
-        bar: 'bar'
+        baz: baz
+        bar: bar
     -->
 </div>
 ```
