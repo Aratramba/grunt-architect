@@ -69,7 +69,7 @@ json object to use as a basis for the blueprints file.
 
 Make sure you write valid yaml, json or cson. Yaml is probably easiest to write. 
 
-Everything you write after keyword and before the beginning of your object will be ignored. Might be a nice place for some descriptive piece of text, let's call it a comment comment.
+Everything you write after keyword and before the beginning of your object will be ignored. Might be a nice place for some descriptive piece of text (let's call it a comment comment).
 
 ### Variables
 __path__ (required) <br>

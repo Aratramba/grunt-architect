@@ -26,7 +26,6 @@
     "grunt": "~0.4.x",
     "cson": "~1.4.x",
     "json-toolkit": "~1.1.x",
-    "cheerio": "~0.12.x",
     "js-yaml": "~2.1.x",
     "html-comments": "~0.0.x"
   },
