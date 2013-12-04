@@ -1,6 +1,6 @@
 {
   "name": "grunt-architect",
-  "description": "Grunt plugin for creating blueprints",
+  "description": "Populate a JSON file right from your HTML comments. Use json, yaml or cson to store your data.",
   "version": "0.0.1",
   "author": {
     "name": "Arjen Scherff-de Water",
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/EightMedia/grunt-architect/issues"
   },
-  "main": "Gruntfile.js",
+  "main": "Gruntfile.coffee",
   "engines": {
     "node": ">= 0.8.0"
   },
