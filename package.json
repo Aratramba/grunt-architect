@@ -1,17 +1,17 @@
 {
   "name": "grunt-architect",
   "description": "Grunt plugin for creating blueprints",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "author": {
     "name": "Arjen Scherff-de Water",
     "email": "aratramba@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/arjen/grunt-architect.git"
+    "url": "git://github.com/EightMedia/grunt-architect.git"
   },
   "bugs": {
-    "url": "https://github.com/arjen/grunt-architect/issues"
+    "url": "https://github.com/EightMedia/grunt-architect/issues"
   },
   "main": "Gruntfile.js",
   "engines": {
